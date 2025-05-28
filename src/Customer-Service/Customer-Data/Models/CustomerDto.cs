@@ -1,6 +1,9 @@
-﻿namespace Customer.Service
+﻿namespace Customer.Data
 {
-    public class CustomerRequest
+    /// <summary>
+    /// A customer dto.
+    /// </summary>
+    public class CustomerDto
     {
         public Guid Id { get; set; }
 
