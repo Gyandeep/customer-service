@@ -17,7 +17,7 @@
             this._customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
         }
 
-        [HttpGet]
+        [HttpGet("{guid}")]
         public async Task<IActionResult> GetCustomer([FromRoute]Guid guid)
         {
             try
@@ -51,7 +51,7 @@
             }
             catch (ResourceAlreadyExistsException resAEx)
             {
-                return StatusCode((int)HttpStatusCode.PreconditionFailed, resAEx);
+                return StatusCode((int)HttpStatusCode.PreconditionFailed, resAEx.Message);
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@
             return StatusCode((int)HttpStatusCode.InternalServerError, $"An error has occurred while updating customer data id: {customerRequest.Id}");
         }
 
-        [HttpDelete]
+        [HttpDelete("{guid}")]
         public async Task<ActionResult> DeleteCustomer([FromRoute] Guid guid)
         {
             try

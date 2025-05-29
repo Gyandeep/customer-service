@@ -2,21 +2,22 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+
+ENV ASPNETCORE_URLS=http://+:8080
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Customer-Service/Customer-Service.csproj", "Customer-Service/"]
-RUN dotnet restore "Customer-Service/Customer-Service.csproj"
+COPY ["Customer-Service/Customer.Service.csproj", "Customer-Service/"]
+RUN dotnet restore "Customer-Service/Customer.Service.csproj"
 COPY . .
 WORKDIR "/src/Customer-Service"
-RUN dotnet build "Customer-Service.csproj" -c Release -o /app/build
+RUN dotnet build "Customer.Service.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Customer-Service.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Customer.Service.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Customer-Service.dll"]
+ENTRYPOINT ["dotnet", "Customer.Service.dll"]
