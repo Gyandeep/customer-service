@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customerservice
+spec:
+  selector:
+    matchLabels:
+      app: customerservice
+  template:
+    metadata:
+      labels:
+        app: customerservice
+    spec:
+      containers:
+      - name: customerservice
+        image: customerservice:v1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "1G"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
